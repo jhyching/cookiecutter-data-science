@@ -35,8 +35,6 @@ services:
              - "1"
              - --port
              - "5000"
-             - --file-store
-             - file:///opt/mlruns
              - --backend-store-uri 
              - file:///opt/mlruns
              - --default-artifact-root
