@@ -6,10 +6,12 @@ services:
       image: jupyter/pyspark-notebook:1386e2046833
       container_name: project_jupyter
       volumes:
-          - ".:/home/jovyan/work"
+        - ".:/home/jovyan/work"
       ports:
         - "8888:8888"
         - "4040-4050:4040-4050"
+      environment:
+        - MLFLOW_TRACKING_URI=http://mlflow:5000
       depends_on:
         - mlflow
 
@@ -20,6 +22,8 @@ services:
             dockerfile: Dockerfile_mlflow
         image: mlflow:0.0.1
         container_name: project_mlflow
+        volumes:
+            - "./models/mlruns:/opt/mlruns"
         ports:
              - "5000:5000"
         entrypoint:
@@ -31,5 +35,14 @@ services:
              - "1"
              - --port
              - "5000"
+             - --file-store
+             - file:///opt/mlruns
              - --backend-store-uri 
              - file:///opt/mlruns
+             - --default-artifact-root
+             - file:///opt/mlruns
+
+
+networks:
+    default:
+        name: project_default
