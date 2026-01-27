@@ -1,20 +1,16 @@
 Generating the docs
 ----------
 
-Install requirements:
+Install development requirements:
 
-    pip install -r requirements.txt
+    pip install -r dev-requirements.txt
 
 Change directories into the docs folder:
 
     cd docs
 
-Use [mkdocs](http://www.mkdocs.org/) structure to update the documentation. Test locally with:
+Use [mkdocs](https://www.mkdocs.org/) structure to update the documentation. Test locally with:
 
     mkdocs serve
 
-Once the docs look good, publish to `gh-pages` branch with:
-
-    mkdocs gh-deploy --clean
-
-** Note **: Never edit the generated site by hand because using `gh-deploy` blows away the `gh-pages` branch and you'll lose your edits.
+The [hosted docs](https://cookiecutter-data-science.drivendata.org/) are deployed via [render](render.com) when the `master` branch is updated.
