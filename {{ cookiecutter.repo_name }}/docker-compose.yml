@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+
+
+    jupyter:
+      image: jupyter/pyspark-notebook:1386e2046833
+      container_name: project_jupyter
+      volumes:
+        - ".:/home/jovyan/work"
+        - "$DATA_DIR:/home/jovyan/data"
+      ports:
+        - "8888:8888"
+        - "4040-4050:4040-4050"
+      environment:
+        - MLFLOW_TRACKING_URI=http://mlflow:5000
+        - JUPYTER_ENABLE_LAB=yes
+      depends_on:
+        - mlflow
+
+
+    mlflow:
+        build:
+            context: .
+            dockerfile: Dockerfile_mlflow
+        image: mlflow:0.0.1
+        container_name: project_mlflow
+        volumes:
+            - "./models/mlruns:/opt/mlruns"
+        ports:
+             - "5000:5000"
+        entrypoint:
+             - /opt/conda/bin/mlflow 
+             - server
+             - --host
+             - "0.0.0.0"
+             - --workers
+             - "1"
+             - --port
+             - "5000"
+             - --backend-store-uri 
+             - file:///opt/mlruns
+             - --default-artifact-root
+             - file:///opt/mlruns
+
+
+networks:
+    default:
+        name: project_default

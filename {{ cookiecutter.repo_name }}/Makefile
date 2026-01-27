@@ -150,6 +150,15 @@ create_environment:
 {% endif %}
 {% endif %}
 
+.PHONY: jupyter
+jupyter: ## Start Jupyter+Spark Environment
+	docker-compose up --no-recreate -d jupyter;
+	@while [ `docker exec project_jupyter jupyter notebook list | wc -l` -eq "1" ]; do \
+	echo "CREATING ..."; \
+	sleep 3s; \
+	done
+	if [ -a requirements.txt ]; then docker exec -i project_jupyter bash -c "cd /home/jovyan/work && pip install -r requirements.txt"; fi;
+	docker exec project_jupyter jupyter notebook list;
 
 #################################################################################
 # PROJECT RULES                                                                 #

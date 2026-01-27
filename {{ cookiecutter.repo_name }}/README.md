@@ -57,5 +57,7 @@
     └── plots.py                <- Code to create visualizations
 ```
 
+Quickstart
 --------
+Use `make jupyter` to launch the tool stack.
 
